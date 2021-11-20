@@ -1,44 +1,48 @@
-
 // @ts-ignore
 import {v4} from "https://deno.land/std/uuid/mod.ts";
 import {HttpRecord} from "./models/HttpRecord.ts";
 
-export async function get_html_text(url:URL) : Promise<any> {
+/*
+
+returns http text (normally html)
+
+*/
+
+
+export async function get_html_text(unparsed_url:string) : Promise<string> {
 
     return new Promise(async function (resolve, reject) {
+                let parsed_url = new URL(unparsed_url)
+        //send get
+                await fetch(parsed_url.href).then(function (result) {
 
-                await fetch(url.href).then(function (result) {
+                    if (result !== undefined) {
 
-                    if (result !== undefined && result !== null) {
-
-                        //second promise. turn result to text.
+                        //turn result to text.
                         result.text().then(function (text) {
 
                                 resolve(text)
 
                         }).catch(error => {
 
-                            let funnel_point = "radio_flyer.ts"
-                            let funk = "http call inny"
-                            let id = v4.generate()
-
-                            console.error(funk)
                             console.error(error)
+
                         })
 
                     }
                 }).catch(error => {
 
-                    let funnel_point = "radio_flyer.ts"
-                    let funk = "http call outty"
-                    let id = v4.generate()
-
-                    console.error(funk)
-                    console.log(error)
+                    console.error(error)
 
                 })
     })
 }
+
+/*
+
+returns http record
+
+*/
 
 export async function get_http_record(unparsed_url:string) : Promise<HttpRecord> {
 
@@ -62,7 +66,7 @@ export async function get_http_record(unparsed_url:string) : Promise<HttpRecord>
 
                 record.response = result
 
-                //second promise. turn result to text.
+                // turn result to text.
                 result.text().then(function (text) {
 
                     if (text.length > 1){
@@ -75,27 +79,14 @@ export async function get_http_record(unparsed_url:string) : Promise<HttpRecord>
 
                 }).catch(error => {
 
-                    let funnel_point = "radio_flyer.ts"
-                    let funk = "get_http_record inny"
-                    let id = v4.generate()
-
-                    console.error(funk)
                     console.error(error)
 
-                    //reject(error)
                 })
 
             }
         }).catch(error => {
 
-            let funnel_point = "radio_flyer.ts"
-            let funk = "get_http_record outty"
-            let id = v4.generate()
-
-            console.error(funk)
-            console.log(error)
-
-            //reject(error)
+            console.error(error)
 
         })
     })

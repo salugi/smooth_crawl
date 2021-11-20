@@ -11,7 +11,7 @@ import {conduct_basic_archive} from "./conductor.ts";
 
 
 
-export async function order_crawl_harvest(url:string,link_limit:number){
+export async function operate_crawl(url:string,link_limit:number){
 
     try{
 

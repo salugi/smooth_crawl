@@ -2,8 +2,8 @@
 import {get_html_text, get_http_record} from "./http_client.ts"
 import {catalogue_basic_data, catalogue_links} from "./cataloguer.ts";
 
-import {v4} from "https://deno.land/std/uuid/mod.ts";
 import {HttpRecord} from "./models/HttpRecord.ts";
+const non_crawl_file = ["jpg", "pdf", "gif", "webm", "jpeg","css","js","png"]
 
 /*
 
@@ -60,7 +60,8 @@ export async function conduct_link_harvest(link:string, link_limit:number, page_
             for (let i = 0; i < links.length; i++) {
 
                 let url : URL = new URL(links[i])
-                let text : string = await get_html_text(url)
+                // @ts-ignore
+                let text : string = await get_html_text(url.href)
                 let unharvested_links : Array<URL> = await catalogue_links(url.origin, text)
                 let harvested_links : Array<string> = await harvest_links(links, unharvested_links)
                 let stop : number = 0;
@@ -163,7 +164,8 @@ export async function conduct_worker_harvest(link:string, link_limit:number, pag
             for (let page_index = 0; page_index < links.length; page_index++) {
 
                 let url : URL = new URL(links[page_index])
-                let text : string = await get_html_text(url)
+                // @ts-ignore
+                let text : string = await get_html_text(url.href)
                 let unharvested_links : Array<URL> = await catalogue_links(url.origin, text)
                 let harvested_links : Array<string> = await harvest_links(links, unharvested_links)
                 let stop : number = 0;
@@ -214,7 +216,3 @@ export async function conduct_worker_harvest(link:string, link_limit:number, pag
     })
 
 }
-
-
-
-let non_crawl_file = ["jpg", "pdf", "gif", "webm", "jpeg","css","js","png"]

@@ -1,4 +1,5 @@
-import {order_crawl_harvest} from "./harvest_operator.ts";
+import {operate_crawl} from "./src/operator.ts";
+
 
 let smoke = Deno.args
 
@@ -9,7 +10,7 @@ try{
     let url = new URL(smoke[0])
 
     // @ts-ignore
-    let crawled_pages : Array<HttpRecord> = await order_crawl_harvest(url.href, limit_int)
+    let crawled_pages : Array<HttpRecord> = await operate_crawl(url.href, limit_int)
 
 
     crawled_pages.forEach(element =>{
@@ -23,3 +24,4 @@ try{
     console.error(err)
 
 }
+
