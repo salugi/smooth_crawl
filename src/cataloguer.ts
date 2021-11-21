@@ -1,5 +1,4 @@
 import {DOMParser} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts';
-import {v4} from "https://deno.land/std/uuid/mod.ts";
 
 export async function catalogue_links(origin:string, text:string):Promise<any>{
 
@@ -14,11 +13,6 @@ export async function catalogue_links(origin:string, text:string):Promise<any>{
                 const document: any = new DOMParser().parseFromString(text, 'text/html');
 
                 if (document === undefined) {
-
-                    let funnel_point = "cataloguer.ts"
-                    let funk = "crawl"
-                    let error = "unable to interchange gen_object"
-                    let id = v4.generate()
 
                     resolve(link_set)
 
@@ -128,14 +122,12 @@ export async function catalogue_basic_data(origin:string, text:string):Promise<a
                 }
 
             }else{
+
                 resolve(link_set)
+
             }
 
         }catch(error){
-
-            let funnel_point = "cataloguer.ts"
-            let funk = "crawl"
-            let id = v4.generate()
 
             console.error(error)
         }
@@ -144,7 +136,8 @@ export async function catalogue_basic_data(origin:string, text:string):Promise<a
 
 }
 
-function meta_parse(a:Array<any>):Array<string>{
+// @ts-ignore
+function meta_parse(a:Array<any>):Array<any>{
     try {
 
         let out = Array<any>();
@@ -206,13 +199,12 @@ function meta_parse(a:Array<any>):Array<string>{
             }
 
         }
-
         return out
 
     }catch(error){
 
         console.log("crawler-tools.ts")
-        Deno.exit(2)
+        console.error(error)
 
     }
 

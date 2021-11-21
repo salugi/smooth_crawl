@@ -4,7 +4,7 @@ import {conduct_basic_archive} from "./conductor.ts";
 
 export let bookie_emitter = new EventEmitter()
 
-export function book_http_archive(unparsed_url : string){
+export function book_http_record(unparsed_url : string){
     (async () =>{
         try {
 
@@ -16,9 +16,7 @@ export function book_http_archive(unparsed_url : string){
 
 
         }catch (error) {
-            let funnel_point = "harvester_consumer.ts"
-            let funk = "channel.consume callback"
-            // let id = v4.generate()
+            let funk = "book_http_record"
 
             console.error(funk)
             console.error(error)
@@ -26,4 +24,4 @@ export function book_http_archive(unparsed_url : string){
     })()
 }
 
-bookie_emitter.on("book_http_archive", await book_http_archive)
+bookie_emitter.on("book_http_archive", await book_http_record)
