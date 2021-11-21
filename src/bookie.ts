@@ -24,4 +24,4 @@ export function book_http_record(unparsed_url : string){
     })()
 }
 
-bookie_emitter.on("book_http_archive", await book_http_record)
+bookie_emitter.on("book_http_archive", book_http_record)
