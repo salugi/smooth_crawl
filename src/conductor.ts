@@ -54,6 +54,7 @@ export async function conduct_link_harvest(link:string, link_limit:number, page_
         try {
 
             let links = Array();
+            let should_break = false
 
             links.push(link)
 
@@ -69,10 +70,17 @@ export async function conduct_link_harvest(link:string, link_limit:number, page_
                 if (links.length + harvested_links.length > link_limit){
 
                     stop = link_limit - links.length
+                    should_break = true
 
                 }else{
 
                     stop = harvested_links.length
+
+                }
+
+                if(i >= page_limit){
+
+                   should_break = true
 
                 }
 
@@ -82,10 +90,8 @@ export async function conduct_link_harvest(link:string, link_limit:number, page_
 
                 }
 
-                if(i >= page_limit){
-
-                    break;
-
+                if(should_break){
+                    break
                 }
 
             }
@@ -149,70 +155,3 @@ function get_url_extension( url: string ) {
 }
 
 
-
-export async function conduct_worker_harvest(link:string, link_limit:number, page_limit:number) : Promise<Array<string>> {
-
-    return new Promise<Array<string>>(async (resolve, reject)=>{
-
-        try {
-
-            let links = Array();
-            let should_break = false
-
-            links.push(link)
-
-            for (let page_index = 0; page_index < links.length; page_index++) {
-
-                let url : URL = new URL(links[page_index])
-                // @ts-ignore
-                let text : string = await get_html_text(url.href)
-                let unharvested_links : Array<URL> = await catalogue_links(url.origin, text)
-                let harvested_links : Array<string> = await harvest_links(links, unharvested_links)
-                let stop : number = 0;
-
-                if (links.length + harvested_links.length > link_limit){
-
-                    stop = link_limit - links.length
-                    should_break = true
-
-                }else{
-
-                    stop = harvested_links.length
-
-                }
-
-                if(page_index >= page_limit ){
-
-                    should_break = true
-
-                }
-
-                for (let j = 0; j < stop; j++) {
-
-                    links.push(harvested_links[j])
-
-                    //worker.postMessage({ url : harvested_links[j]})
-
-                    //publisher.publish_message( { url : harvested_links[j] } )
-
-                }
-
-                if(should_break){
-
-                    break;
-
-                }
-
-            }
-
-            resolve(links)
-
-        } catch (error) {
-
-            reject(error)
-
-        }
-
-    })
-
-}

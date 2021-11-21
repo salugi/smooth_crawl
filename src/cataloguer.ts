@@ -151,9 +151,7 @@ function meta_parse(a:Array<any>):Array<string>{
 
         for (let i = 0; i < a.length; i++) {
 
-            if (a[i].attributes.content !== undefined
-                &&
-                a[i].attributes.content !== null) {
+            if (a[i].attributes.content !== undefined) {
 
                 let meta_tag = {
                     name: "",
